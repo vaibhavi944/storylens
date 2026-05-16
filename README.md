@@ -1,117 +1,86 @@
-# StoryLens
+# 📖 StoryLens
 
-"Understand your story the way your readers do"
+### "Understand your story the way your readers do."
 
-StoryLens is an AI-assisted multilingual narrative intelligence system for fiction writers inspired by platforms like Pratilipi. It uses advanced RAG workflows and NLP heuristics to identify narrative weaknesses, suggest improvements, and fetch similar strong examples, all while preserving the author's tone and avoiding technical jargon.
+**StoryLens** is an advanced AI-powered narrative intelligence system built for modern fiction writers. Unlike standard grammar checkers, StoryLens acts as a **professional literary editor**, analyzing the deep architecture of your prose—pacing, emotional resonance, and structural rhythm—across English, Hindi, and Marathi.
 
-## Architecture
+---
 
-![Architecture Diagram Placeholder](https://via.placeholder.com/800x400.png?text=StoryLens+Architecture)
+## 🌟 Why it's Special
+Most AI writing tools feel robotic. StoryLens is different. It combines **precise NLP heuristics** with **state-of-the-art LLM reasoning** to provide feedback that actually helps a writer grow, not just "fix" text.
 
-* Frontend: Streamlit
-* Backend: Python
-* LLM Orchestration: LangChain & LangGraph
-* LLM Provider: Groq API (llama-3.3-70b-versatile)
-* Embeddings: intfloat/multilingual-e5-base
-* Vector Store: FAISS
-* Processing: SpaCy, TextBlob, Transformers
+- **🧠 Deep Reasoning**: Instead of simple word-counting, it uses custom heuristics to detect repetitive sentence starts, monotonous pacing, and flat emotional arcs.
+- **🌍 Native Multi-lingualism**: Built with a custom RAG (Retrieval-Augmented Generation) pipeline supporting English, Hindi, and Marathi. It doesn't just translate; it understands cultural and linguistic nuances.
+- **🛠️ Professional Editor Workflow**: Powered by **LangGraph**, the system orchestrates a sophisticated "Think-Write-Evaluate" cycle, ensuring every suggestion is high-quality and tone-consistent.
+- **📚 RAG-Powered Inspiration**: Connects your writing to a database of thousands of high-quality story segments (TinyStories & IITB Corpus) to suggest improvements based on proven narrative success.
 
-====================================================
-## ENVIRONMENT SETUP REQUIREMENTS
-====================================================
+---
 
-Before building the project, please set up an isolated virtual environment. The project heavily depends on specific versions of ML/NLP libraries which might conflict with global installations.
+## 🚀 Technical Architecture
 
-### 1. Create a dedicated Python virtual environment
+StoryLens is a full-stack AI system designed for scale and measurable reasoning:
 
-**Environment name:** `storylens_env`
+- **Orchestration**: `LangChain` & `LangGraph` (Conditional state-based workflows).
+- **Inference**: `Groq API` (Llama-3.3-70b-versatile) for lightning-fast reasoning.
+- **Intelligence**: 
+  - **Custom Heuristics Layer**: Python-based modules for pacing and repetition analysis.
+  - **Feature Extraction**: SpaCy, TextBlob, and Transformers.
+- **RAG System**:
+  - **Embeddings**: `intfloat/multilingual-e5-base` (Optimized for cross-lingual retrieval).
+  - **Vector Store**: `FAISS` (Localized high-speed retrieval).
+- **UI**: `Streamlit` (A focused, writer-centric interface).
 
-#### Windows:
+---
+
+## 🛠️ Installation & Setup
+
+### 1. Environment Preparation
 ```bash
+# Create a dedicated environment
 python -m venv storylens_env
-```
+source storylens_env/bin/activate  # Mac/Linux
+storylens_env\Scripts\activate     # Windows
 
-#### Mac/Linux:
-```bash
-python3 -m venv storylens_env
-```
-
-### 2. Activate the environment
-
-#### Windows:
-```bash
-storylens_env\Scripts\activate
-```
-
-#### Mac/Linux:
-```bash
-source storylens_env/bin/activate
-```
-
-### 3. Install dependencies
-
-```bash
+# Install core dependencies
 pip install -r requirements.txt
 python -m spacy download en_core_web_sm
 ```
 
-### 4. Configure Environment Variables
-
-```bash
-cp .env.example .env
+### 2. Configuration
+Create a `.env` file in the root directory:
+```env
+GROQ_API_KEY=your_key_here
 ```
-Edit `.env` and add your Groq API key:
-`GROQ_API_KEY=your_groq_api_key_here`
 
-### 5. VS Code Configuration (Optional but Recommended)
-- Ensure the Python extension is installed.
-- Open the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P`) and select `Python: Select Interpreter`.
-- Choose the interpreter located inside `storylens_env`.
-
-====================================================
-## RUN COMMAND REQUIREMENTS
-====================================================
-
-To run the full pipeline, execute the following commands in order:
-
-### 1. Download Datasets
-Downloads English (TinyStories) and Hindi (hindi_discourse) sample datasets for RAG.
+### 3. Initialize the Vector Intelligence
 ```bash
+# 1. Download high-quality datasets
 python ingestion/download_datasets.py
-```
 
-### 2. Run Embedding Pipeline
-Processes the raw downloaded stories, applies chunking, generates metadata, and stores vectors in FAISS.
-```bash
+# 2. Build the FAISS intelligence base
 python ingestion/embedding_pipeline.py
 ```
 
-### 3. Start Streamlit App
-Launches the interactive UI.
+### 4. Launch StoryLens
 ```bash
 streamlit run app.py
 ```
 
-## Features
-- **Narrative Weakness Detection**: Detects issues in pacing, emotion, and repetitive dialogue ratios using pure heuristics and NLP before relying on LLMs.
-- **Multilingual Support**: Supports English, Hindi, and Marathi narratives.
-- **Tone Preservation**: Rewrites suggestions adapt to your specific narrative voice.
-- **Reader-Centric Explanations**: No RAG/Cosine similarity jargon; pure, writer-friendly feedback.
+---
 
-## Folder Structure
-- `app.py`: Main Streamlit application.
-- `ingestion/`: Scripts for downloading datasets, preprocessing, and building the FAISS vector database.
-- `rag/`: Vector database and retrieval definitions.
-- `features/`: Pure Python modules extracting narrative metrics from text.
-- `scoring/`: Weakness estimation based on narrative heuristics.
-- `prompts/`: LLM instructional prompts.
-- `agents/`: Core LLM interaction modules.
-- `langgraph_flow/`: Routing and conditional pipelines for analyzing and rewriting content.
-- `ui/`: Subcomponents for the Streamlit UI.
-- `utils/`: Helpers, formatting, and logging.
-- `data/`: Storage for datasets.
+## 📁 Project Structure
+- `agents/`: Dedicated LLM experts for Rewriting, Feedback, and Summarization.
+- `langgraph_flow/`: The "brain" of the system—orchestrating the conditional analysis workflow.
+- `features/`: The "eyes" of the system—heuristic modules extracting raw narrative metrics.
+- `rag/`: Vector search and retrieval-augmented generation logic.
+- `ui/`: Clean, localized components for an immersive writing experience.
 
-## Future Improvements
-- Deeper narrative arc analysis.
-- Multi-chapter context tracking.
-- More robust support for low-resource languages.
+---
+
+## 🔮 Future Vision
+- **Cross-Chapter Memory**: Tracking character arcs across an entire book.
+- **Style Mimicry**: Training the RAG layer on a specific author's complete works.
+- **Expanded Dialect Support**: Deep support for regional Indian languages and dialects.
+
+---
+*Created with passion for the art of storytelling.* 🖋️

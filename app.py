@@ -24,7 +24,7 @@ st.set_page_config(
     page_title="StoryLens",
     page_icon="📖",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
 # Custom CSS for aesthetic styling
@@ -96,14 +96,12 @@ def run_analysis(story_input, lang_code, ui_labels, selected_genre):
 
 def main():
     st.title("📖 StoryLens")
-    
-    # Sidebar Setup
-    st.sidebar.header("Settings / सेटिंग्स")
+    st.markdown("#### *Understand your story the way your readers do*")
+
+    # Check for API Key
     api_key = os.getenv("GROQ_API_KEY")
     if not api_key or api_key == "your_groq_api_key_here":
-        st.sidebar.error("⚠️ GROQ_API_KEY not found.")
-    else:
-        st.sidebar.success("✅ Connected")
+        st.error("⚠️ GROQ_API_KEY not found in .env file.")
 
     # Three separate pages/tabs for languages as requested
     selected_lang = st.radio(
@@ -111,6 +109,7 @@ def main():
         ["English", "Hindi / हिंदी", "Marathi / मराठी"],
         horizontal=True
     )
+
 
     if selected_lang == "English":
         lang_key = "english"
@@ -164,9 +163,6 @@ def main():
     st.subheader(ui_labels["title"])
     st.markdown(f"*{ui_labels['desc']}*")
     
-    st.sidebar.markdown("---")
-    st.sidebar.markdown(f"**{ui_labels['about']}**")
-    
     # Genre Focus Selector
     selected_genre = st.selectbox(
         ui_labels["genre"], 
@@ -183,6 +179,12 @@ def main():
     
     if st.button(ui_labels["button"], use_container_width=True, key=f"btn_{lang_key}"):
         run_analysis(story_input, lang_key, ui_labels, selected_genre)
+
+    # Footer / About
+    st.markdown("---")
+    st.markdown(f"**{ui_labels['about']}**")
+    st.caption(ui_labels["desc"])
+
 
 
 if __name__ == "__main__":
