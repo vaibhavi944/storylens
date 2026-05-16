@@ -36,6 +36,8 @@ def render_rewrite_studio(paragraphs_state: list[dict]):
         
     for state in rewritten_paragraphs:
         para_label = {"english": "Paragraph", "hindi": "अनुच्छेद", "marathi": "परिच्छेद"}.get(lang, "Paragraph")
+        what_label = {"english": "What changed?", "hindi": "क्या बदलाव हुए?", "marathi": "काय बदल झाले?"}.get(lang, "What changed?")
+        
         st.markdown(f"#### {para_label} {state['paragraph_id'] + 1}")
         col1, col2 = st.columns(2)
         
@@ -47,4 +49,8 @@ def render_rewrite_studio(paragraphs_state: list[dict]):
             st.markdown(f"**{labels['suggested']}**")
             st.text_area("rewrite", state["rewritten_text"], height=200, label_visibility="collapsed", key=f"rewr_{state['paragraph_id']}")
             
+        # Explanation section
+        st.markdown(f"**{what_label}**")
+        st.write(state["rewrite_explanation"])
         st.markdown("---")
+

@@ -10,6 +10,8 @@ class ParagraphState(TypedDict):
     paragraph_id: int
     original_text: str
     language: str
+    genre: str
+
     
     # Feature Extraction
     metrics: Optional[dict]

@@ -48,7 +48,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-def run_analysis(story_input, lang_code, ui_labels):
+def run_analysis(story_input, lang_code, ui_labels, selected_genre):
     """
     Core analysis logic shared across pages.
     """
@@ -62,20 +62,20 @@ def run_analysis(story_input, lang_code, ui_labels):
         st.warning("Could not identify paragraphs.")
         return
         
-    st.info(ui_labels["info_analyzing"].format(n=len(paragraphs)))
+    status_container = st.empty()
+    status_container.info(ui_labels["info_analyzing"].format(n=len(paragraphs)))
     
     progress_bar = st.progress(0)
     
     results = []
     for i, para in enumerate(paragraphs):
         # Process via LangGraph
-        # We explicitly pass the language to bypass autodetection inside the graph
-        state = process_paragraph(para, paragraph_id=i)
-        state["language"] = lang_code # Force the selected language
+        state = process_paragraph(para, paragraph_id=i, genre=selected_genre)
+        state["language"] = lang_code 
         results.append(state)
         progress_bar.progress((i + 1) / len(paragraphs))
         
-    st.success(ui_labels["success"])
+    status_container.success(ui_labels["success"])
     
     # Tabs for different views
     tab1, tab2, tab3, tab4 = st.tabs(ui_labels["tabs"])
@@ -88,6 +88,11 @@ def run_analysis(story_input, lang_code, ui_labels):
         render_rewrite_studio(results)
     with tab4:
         render_summary_report(results)
+        # Add Download Button to Summary
+        report_text = f"StoryLens Analysis Report\nGenre: {selected_genre}\nLanguage: {lang_code}\n\n"
+        for r in results:
+            report_text += f"Para {r['paragraph_id']+1} ({r['label']}): {r['original_text']}\n\n"
+        st.download_button("Download Full Report", report_text, file_name="storylens_report.txt")
 
 def main():
     st.title("📖 StoryLens")
@@ -112,6 +117,7 @@ def main():
         ui_labels = {
             "title": "English Story Analysis",
             "desc": "An AI-assisted narrative intelligence system that identifies pacing issues and suggests improvements.",
+            "genre": "Genre Focus",
             "paste": "Paste your English chapter here:",
             "placeholder": "Once upon a time...",
             "button": "Analyze Chapter",
@@ -126,6 +132,7 @@ def main():
         ui_labels = {
             "title": "हिंदी कहानी विश्लेषण",
             "desc": "एक एआई-आधारित कहानी विश्लेषण प्रणाली जो बिना किसी तकनीकी शब्दावली के लेखन में सुधार के सुझाव देती है।",
+            "genre": "शैली (Genre)",
             "paste": "अपनी हिंदी कहानी यहाँ पेस्ट करें:",
             "placeholder": "एक समय की बात है...",
             "button": "अध्याय का विश्लेषण करें",
@@ -140,6 +147,7 @@ def main():
         ui_labels = {
             "title": "मराठी कथा विश्लेषण",
             "desc": "एक AI-आधारित कथा विश्लेषण प्रणाली जी तांत्रिक शब्दावलीशिवाय लेखनात सुधारणा सुचवते.",
+            "genre": "शैली (Genre)",
             "paste": "तुमची मराठी कथा येथे पेस्ट करा:",
             "placeholder": "एकदा एक...",
             "button": "प्रकरणाचे विश्लेषण करा",
@@ -156,6 +164,13 @@ def main():
     st.sidebar.markdown("---")
     st.sidebar.markdown(f"**{ui_labels['about']}**")
     
+    # Genre Focus Selector
+    selected_genre = st.selectbox(
+        ui_labels["genre"], 
+        ["General", "Romance", "Thriller", "Fantasy", "Drama"],
+        key=f"genre_{lang_key}"
+    )
+
     story_input = st.text_area(
         ui_labels["paste"], 
         height=300, 
@@ -164,7 +179,8 @@ def main():
     )
     
     if st.button(ui_labels["button"], use_container_width=True, key=f"btn_{lang_key}"):
-        run_analysis(story_input, lang_key, ui_labels)
+        run_analysis(story_input, lang_key, ui_labels, selected_genre)
+
 
 if __name__ == "__main__":
     main()

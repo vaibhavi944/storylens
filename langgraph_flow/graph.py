@@ -24,13 +24,27 @@ def extract_features_node(state: ParagraphState) -> ParagraphState:
     
     return state
 
+from agents.feedback_agent import generate_specific_feedback
+
 def provide_feedback_node(state: ParagraphState) -> ParagraphState:
     if state["label"] != "strong" and state["primary_issue"]:
-        feedback = get_feedback_for_issue(state["primary_issue"], state["metrics"])
-        state["feedback_title"] = feedback["title"]
-        state["feedback_explanation"] = feedback["explanation"]
-        state["feedback_suggestion"] = feedback["suggestion"]
+        # Get the generic title from our mapping
+        generic_feedback = get_feedback_for_issue(state["primary_issue"], state["metrics"])
+        state["feedback_title"] = generic_feedback["title"]
+        
+        # Call the LLM to get SPECIFIC explanation and suggestion
+        specific_feedback = generate_specific_feedback(
+            text=state["original_text"],
+            language=state["language"],
+            metrics=state["metrics"],
+            weakness=state["primary_issue"]
+        )
+        
+        # We store the specific feedback as the explanation
+        state["feedback_explanation"] = specific_feedback
+        state["feedback_suggestion"] = generic_feedback["suggestion"]
     return state
+
 
 def rewrite_node(state: ParagraphState) -> ParagraphState:
     if state["rewrite_attempts"] >= 2:
@@ -40,7 +54,8 @@ def rewrite_node(state: ParagraphState) -> ParagraphState:
         original_text=state["original_text"],
         language=state["language"],
         weakness=state["primary_issue"],
-        explanation=state["feedback_explanation"]
+        explanation=state["feedback_explanation"],
+        genre=state.get("genre", "General")
     )
     
     state["rewritten_text"] = result["rewrite"]
@@ -48,6 +63,7 @@ def rewrite_node(state: ParagraphState) -> ParagraphState:
     state["rewrite_attempts"] += 1
     
     return state
+
 
 def evaluate_node(state: ParagraphState) -> ParagraphState:
     if not state["rewritten_text"]:
@@ -103,7 +119,7 @@ def build_paragraph_graph():
     
     return workflow.compile()
 
-def process_paragraph(text: str, paragraph_id: int = 0) -> ParagraphState:
+def process_paragraph(text: str, paragraph_id: int = 0, genre: str = "General") -> ParagraphState:
     """
     Helper function to run the graph on a single paragraph.
     """
@@ -112,6 +128,7 @@ def process_paragraph(text: str, paragraph_id: int = 0) -> ParagraphState:
         paragraph_id=paragraph_id,
         original_text=text,
         language="unknown",
+        genre=genre,
         metrics=None,
         score=None,
         label=None,
