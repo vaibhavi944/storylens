@@ -1,0 +1,38 @@
+# Environments
+storylens_env/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment variables
+.env
+.env.local
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# VS Code
+.vscode/
+
+# Project specific
+data/raw_stories/*
+!data/raw_stories/.gitkeep
+data/cleaned/*
+!data/cleaned/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+data/demo_inputs/*
+!data/demo_inputs/.gitkeep
+outputs/*
+!outputs/.gitkeep
+vector_stores/
+!vector_stores/.gitkeep
+*.log
