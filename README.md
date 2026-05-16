@@ -1,4 +1,4 @@
-# 📖 StoryLens
+# StoryLens
 
 ### "Understand your story the way your readers do."
 
@@ -6,17 +6,17 @@
 
 ---
 
-## 🌟 Why it's Special
+## Why it's Special
 Most AI writing tools feel robotic. StoryLens is different. It combines **precise NLP heuristics** with **state-of-the-art LLM reasoning** to provide feedback that actually helps a writer grow, not just "fix" text.
 
-- **🧠 Deep Reasoning**: Instead of simple word-counting, it uses custom heuristics to detect repetitive sentence starts, monotonous pacing, and flat emotional arcs.
-- **🌍 Native Multi-lingualism**: Built with a custom RAG (Retrieval-Augmented Generation) pipeline supporting English, Hindi, and Marathi. It doesn't just translate; it understands cultural and linguistic nuances.
-- **🛠️ Professional Editor Workflow**: Powered by **LangGraph**, the system orchestrates a sophisticated "Think-Write-Evaluate" cycle, ensuring every suggestion is high-quality and tone-consistent.
-- **📚 RAG-Powered Inspiration**: Connects your writing to a database of thousands of high-quality story segments (TinyStories & IITB Corpus) to suggest improvements based on proven narrative success.
+- **Deep Reasoning**: Instead of simple word-counting, it uses custom heuristics to detect repetitive sentence starts, monotonous pacing, and flat emotional arcs.
+- **Native Multi-lingualism**: Built with a custom RAG (Retrieval-Augmented Generation) pipeline supporting English, Hindi, and Marathi. It doesn't just translate; it understands cultural and linguistic nuances.
+- **Professional Editor Workflow**: Powered by **LangGraph**, the system orchestrates a sophisticated "Think-Write-Evaluate" cycle, ensuring every suggestion is high-quality and tone-consistent.
+- **RAG-Powered Inspiration**: Connects your writing to a database of thousands of high-quality story segments (TinyStories & IITB Corpus) to suggest improvements based on proven narrative success.
 
 ---
 
-## 🚀 Technical Architecture
+## Technical Architecture
 
 StoryLens is a full-stack AI system designed for scale and measurable reasoning:
 
@@ -32,7 +32,7 @@ StoryLens is a full-stack AI system designed for scale and measurable reasoning:
 
 ---
 
-## 🛠️ Installation & Setup
+## Installation & Setup
 
 ### 1. Environment Preparation
 ```bash
@@ -68,7 +68,7 @@ streamlit run app.py
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 - `agents/`: Dedicated LLM experts for Rewriting, Feedback, and Summarization.
 - `langgraph_flow/`: The "brain" of the system—orchestrating the conditional analysis workflow.
 - `features/`: The "eyes" of the system—heuristic modules extracting raw narrative metrics.
@@ -77,10 +77,11 @@ streamlit run app.py
 
 ---
 
-## 🔮 Future Vision
+## Future Vision
 - **Cross-Chapter Memory**: Tracking character arcs across an entire book.
 - **Style Mimicry**: Training the RAG layer on a specific author's complete works.
 - **Expanded Dialect Support**: Deep support for regional Indian languages and dialects.
 
 ---
-*Created with passion for the art of storytelling.* 🖋️
+*Created with passion for the art of storytelling.*
+

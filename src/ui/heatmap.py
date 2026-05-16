@@ -9,7 +9,7 @@ from src.utils.scoring_utils import label_to_color
 
 def render_heatmap(paragraphs_state: list[dict]):
     """
-    Renders the story heatmap.
+    Renders the story flow overview.
     Each paragraph is highlighted based on its label.
     """
     lang = "english"
@@ -56,6 +56,6 @@ def render_heatmap(paragraphs_state: list[dict]):
     
     st.markdown("---")
     col1, col2, col3 = st.columns(3)
-    col1.markdown(f"🟢 **{labels['s']}**: {labels['s_desc']}")
-    col2.markdown(f"🟡 **{labels['m']}**: {labels['m_desc']}")
-    col3.markdown(f"🔴 **{labels['w']}**: {labels['w_desc']}")
+    col1.markdown(f"**{labels['s']}**: {labels['s_desc']}")
+    col2.markdown(f"**{labels['m']}**: {labels['m_desc']}")
+    col3.markdown(f"**{labels['w']}**: {labels['w_desc']}")

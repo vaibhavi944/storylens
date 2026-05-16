@@ -22,107 +22,132 @@ from src.ui.summary_report import render_summary_report
 # Page Config
 st.set_page_config(
     page_title="StoryLens",
-    page_icon="📖",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# Upgraded CSS for product-grade visual polish
+# Custom CSS for aesthetic styling
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap');
 
     .stApp {
-        background-color: #f7f5f0;
+        background-color: #f5f4f0;
         font-family: 'Inter', sans-serif;
+        color: #1c2b2b;
     }
 
     /* Main container width */
     .block-container {
-        max-width: 860px;
-        padding-top: 2rem;
+        max-width: 880px;
+        padding-top: 3rem;
     }
 
     /* Typography */
-    h1 {
-        color: #1a2e35 !important;
-        font-size: 2.4rem !important;
-        font-weight: 700 !important;
-        letter-spacing: -0.5px !important;
+    h1, h2, h3 {
+        font-family: 'Source Serif 4', serif !important;
+        color: #1c2b2b !important;
+        font-weight: 600 !important;
     }
+    
+    h1 {
+        font-size: 2.2rem !important;
+        letter-spacing: -0.3px !important;
+        margin-bottom: 0.2rem !important;
+    }
+
     h4 {
-        color: #5a7a7a !important;
+        font-family: 'Inter', sans-serif !important;
+        color: #6b7f7f !important;
         font-weight: 400 !important;
-        font-size: 1.05rem !important;
+        font-size: 1rem !important;
+        margin-top: 0 !important;
+    }
+
+    .stMarkdown p {
+        font-size: 1rem;
+        line-height: 1.75;
+        color: #1c2b2b;
     }
 
     /* Radio button container */
     div[data-baseweb="radio"] {
         background-color: white;
-        border-radius: 12px;
-        padding: 0.6rem 1rem;
-        border: 1px solid #e0ddd6;
+        border-radius: 10px;
+        padding: 0.5rem 1rem;
+        border: 1px solid #dddad4;
+    }
+    
+    div[data-baseweb="radio"] label {
+        font-weight: 500 !important;
+        color: #1c2b2b !important;
     }
 
     /* Selectbox styling */
     .stSelectbox div[data-baseweb="select"] {
         background-color: white !important;
-        border: 1px solid #d4cfc7 !important;
-        border-radius: 10px !important;
+        border: 1px solid #dddad4 !important;
+        border-radius: 8px !important;
     }
 
     /* Textarea styling */
     .stTextArea textarea {
         background-color: white !important;
-        border: 1.5px solid #d4cfc7 !important;
-        border-radius: 12px !important;
+        border: 1.5px solid #dddad4 !important;
+        border-radius: 10px !important;
+        font-family: 'Inter', sans-serif !important;
         font-size: 1rem !important;
-        line-height: 1.7 !important;
+        line-height: 1.75 !important;
+        padding: 1rem !important;
     }
     .stTextArea textarea:focus {
-        border-color: #008080 !important;
-        box-shadow: 0 0 0 2px rgba(0, 128, 128, 0.1) !important;
+        border-color: #2d6a6a !important;
+        box-shadow: 0 0 0 4px rgba(45, 106, 106, 0.12) !important;
     }
 
     /* Main button styling */
     .stButton>button {
-        background-color: #006d6d !important;
+        background-color: #2d6a6a !important;
         color: white !important;
-        border-radius: 10px !important;
+        border-radius: 8px !important;
         font-weight: 600 !important;
-        height: 3rem !important;
+        font-size: 1rem !important;
+        height: 3.2rem !important;
         transition: all 0.2s ease !important;
         border: none !important;
     }
     .stButton>button:hover {
+        background-color: #1f4f4f !important;
         transform: translateY(-1px) !important;
-        box-shadow: 0 4px 12px rgba(0, 109, 109, 0.2) !important;
+        box-shadow: 0 4px 12px rgba(45, 106, 106, 0.25) !important;
     }
 
     /* Progress bar */
     .stProgress > div > div > div > div {
-        background-color: #008080 !important;
+        background-color: #2d6a6a !important;
     }
 
     /* Tabs styling */
     .stTabs [data-baseweb="tab-list"] {
         background-color: transparent !important;
-        border-bottom: 2px solid #e0ddd6 !important;
+        border-bottom: 2px solid #dddad4 !important;
     }
     .stTabs [data-baseweb="tab"] {
-        color: #5a7a7a !important;
+        color: #6b7f7f !important;
+        background-color: transparent !important;
     }
     .stTabs [aria-selected="true"] {
-        color: #006d6d !important;
-        border-bottom: 2px solid #006d6d !important;
+        color: #2d6a6a !important;
+        border-bottom: 2px solid #2d6a6a !important;
     }
 
     /* Download button */
     .stDownloadButton>button {
-        background-color: #f0f7f7 !important;
-        color: #008080 !important;
-        border: 1px solid #008080 !important;
-        border-radius: 10px !important;
+        background-color: #eef4f4 !important;
+        color: #2d6a6a !important;
+        border: 1.5px solid #2d6a6a !important;
+        border-radius: 8px !important;
+        font-weight: 500 !important;
     }
 
     /* Alert boxes */
@@ -130,8 +155,19 @@ st.markdown("""
         border-radius: 10px !important;
         border: none !important;
     }
+    
+    /* Remove default left border on alerts */
+    .stAlert > div {
+        border-left: none !important;
+    }
+    
+    .stCaption {
+        color: #6b7f7f !important;
+        font-size: 0.85rem !important;
+    }
     </style>
 """, unsafe_allow_html=True)
+
 
 def run_analysis(story_input, lang_code, ui_labels, selected_genre):
     """
@@ -180,14 +216,14 @@ def run_analysis(story_input, lang_code, ui_labels, selected_genre):
         st.download_button("Download Full Report", report_text, file_name="storylens_report.txt")
 
 def main():
-    st.markdown("<h1>📖 StoryLens</h1>", unsafe_allow_html=True)
+    st.markdown("<h1>StoryLens</h1>", unsafe_allow_html=True)
     st.markdown("#### *Understand your story the way your readers do*")
     st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
 
     # Check for API Key
     api_key = os.getenv("GROQ_API_KEY")
     if not api_key or api_key == "your_groq_api_key_here":
-        st.error("⚠️ GROQ_API_KEY not found in .env file.")
+        st.error("GROQ_API_KEY not found in .env file.")
 
     # Three separate pages/tabs for languages as requested
     selected_lang = st.radio(
@@ -226,7 +262,7 @@ def main():
             "warning_text": "कृपया विश्लेषण के लिए कुछ टेक्स्ट दर्ज करें।",
             "info_analyzing": "{n} अनुच्छेदों का विश्लेषण किया जा रहा है। कृपया प्रतीक्षा करें...",
             "success": "विश्लेषण पूर्ण!",
-            "tabs": ["कहानी का प्रवाह", "सुझाव कार्ड", "सुधार स्टूडियो", "सारांश रिपोर्ट"],
+            "tabs": ["कहानी का प्रवाह (Overview)", "सुझाव कार्ड", "सुधार स्टूडियो", "सारांश रिपोर्ट"],
             "about": "स्टोरीलेंस के बारे में"
         }
     else: # Marathi
@@ -242,7 +278,7 @@ def main():
             "warning_text": "कृपया विश्लेषणासाठी काही मजकूर प्रविष्ट करा.",
             "info_analyzing": "{n} परिच्छेदांचे विश्लेषण होत आहे. कृपया प्रतीक्षा करा...",
             "success": "विश्लेषण पूर्ण!",
-            "tabs": ["कथेचा ओघ", "अभिप्राय कार्ड", "सुधारणा स्टुडिओ", "सारांश अहवाल"],
+            "tabs": ["कथेचा ओघ (Overview)", "अभिप्राय कार्ड", "सुधारणा स्टुडिओ", "सारांश अहवाल"],
             "about": "स्टोरीलेंस बद्दल"
         }
 
@@ -269,8 +305,8 @@ def main():
     # Footer Caption
     st.markdown("<div style='height:2rem'></div>", unsafe_allow_html=True)
     st.markdown(
-        "<div style='text-align: center; color: #9aabab; font-size: 0.82rem;'>"
-        "StoryLens · AI-assisted narrative intelligence · Built for Pratilipi writers"
+        "<div style='text-align: center; color: #9aabab; font-size: 0.8rem; font-family: Inter, sans-serif;'>"
+        "StoryLens · AI-assisted narrative intelligence"
         "</div>", 
         unsafe_allow_html=True
     )
