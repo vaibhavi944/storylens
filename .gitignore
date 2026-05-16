@@ -38,5 +38,7 @@ vector_stores/
 *.log
 
 # Test Samples
+tests/samples/
 test_sample_*.txt
+
 

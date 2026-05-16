@@ -11,13 +11,13 @@ from dotenv import load_dotenv
 # Ensure environment variables are loaded
 load_dotenv()
 
-from utils.formatting import split_into_paragraphs
-from langgraph_flow.graph import process_paragraph
+from src.utils.formatting import split_into_paragraphs
+from src.langgraph_flow.graph import process_paragraph
 
-from ui.heatmap import render_heatmap
-from ui.feedback_cards import render_feedback_cards
-from ui.rewrite_studio import render_rewrite_studio
-from ui.summary_report import render_summary_report
+from src.ui.heatmap import render_heatmap
+from src.ui.feedback_cards import render_feedback_cards
+from src.ui.rewrite_studio import render_rewrite_studio
+from src.ui.summary_report import render_summary_report
 
 # Page Config
 st.set_page_config(
