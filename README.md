@@ -1,67 +1,63 @@
 # StoryLens
 
-### "Understand your story the way your readers do."
+Understand your story the way your readers do.
 
-**StoryLens** is an advanced AI-powered narrative intelligence system built for modern fiction writers. Unlike standard grammar checkers, StoryLens acts as a **professional literary editor**, analyzing the deep architecture of your prose—pacing, emotional resonance, and structural rhythm—across English, Hindi, and Marathi.
-
----
-
-## Why it's Special
-Most AI writing tools feel robotic. StoryLens is different. It combines **precise NLP heuristics** with **state-of-the-art LLM reasoning** to provide feedback that actually helps a writer grow, not just "fix" text.
-
-- **Deep Reasoning**: Instead of simple word-counting, it uses custom heuristics to detect repetitive sentence starts, monotonous pacing, and flat emotional arcs.
-- **Native Multi-lingualism**: Built with a custom RAG (Retrieval-Augmented Generation) pipeline supporting English, Hindi, and Marathi. It doesn't just translate; it understands cultural and linguistic nuances.
-- **Professional Editor Workflow**: Powered by **LangGraph**, the system orchestrates a sophisticated "Think-Write-Evaluate" cycle, ensuring every suggestion is high-quality and tone-consistent.
-- **RAG-Powered Inspiration**: Connects your writing to a database of thousands of high-quality story segments (TinyStories & IITB Corpus) to suggest improvements based on proven narrative success.
+StoryLens is an AI-powered narrative intelligence system for fiction writers. It analyzes the deep structure of prose — pacing, emotional arc, and structural rhythm — and suggests specific, reasoned improvements. It works natively across English, Hindi, and Marathi.
 
 ---
 
-## Technical Architecture
+## Why StoryLens
 
-StoryLens is a full-stack AI system designed for scale and measurable reasoning:
-
-- **Orchestration**: `LangChain` & `LangGraph` (Conditional state-based workflows).
-- **Inference**: `Groq API` (Llama-3.3-70b-versatile) for lightning-fast reasoning.
-- **Intelligence**: 
-  - **Custom Heuristics Layer**: Python-based modules for pacing and repetition analysis.
-  - **Feature Extraction**: SpaCy, TextBlob, and Transformers.
-- **RAG System**:
-  - **Embeddings**: `intfloat/multilingual-e5-base` (Optimized for cross-lingual retrieval).
-  - **Vector Store**: `FAISS` (Localized high-speed retrieval).
-- **UI**: `Streamlit` (A focused, writer-centric interface).
+- **Deep Heuristics**: Detects repetitive sentence starts, monotonous pacing, and flat emotional arcs using custom NLP modules, not simple word counting.
+- **Native Multilingual Support**: A custom RAG pipeline built for English, Hindi, and Marathi that understands linguistic and cultural context, not just translation.
+- **Stateful Workflow**: Powered by LangGraph, the system runs a conditional think-analyze-rewrite cycle ensuring tone-consistent, high-quality suggestions.
+- **RAG-Powered Feedback**: Retrieves relevant segments from a curated story database to ground every suggestion in proven narrative patterns.
 
 ---
 
-## Installation & Setup
+## Architecture
 
-### 1. Environment Preparation
+| Category | Stack |
+|----------|-------|
+| Orchestration | LangChain, LangGraph |
+| Inference | Groq API (Llama-3.3-70b-versatile) |
+| Heuristics | Custom Python modules, spaCy, TextBlob |
+| Embeddings | intfloat/multilingual-e5-base |
+| Vector Store | FAISS |
+| Interface | Streamlit |
+
+---
+
+## Installation
+
+**1. Environment setup**
+
 ```bash
-# Create a dedicated environment
 python -m venv storylens_env
-source storylens_env/bin/activate  # Mac/Linux
-storylens_env\Scripts\activate     # Windows
+source storylens_env/bin/activate
+storylens_env\Scripts\activate     # Windows only
 
-# Install core dependencies
 pip install -r requirements.txt
 python -m spacy download en_core_web_sm
 ```
 
-### 2. Configuration
+**2. Configuration**
+
 Create a `.env` file in the root directory:
+
 ```env
 GROQ_API_KEY=your_key_here
 ```
 
-### 3. Initialize the Vector Intelligence
-```bash
-# 1. Download high-quality datasets
-python ingestion/download_datasets.py
+**3. Build the vector database**
 
-# 2. Build the FAISS intelligence base
+```bash
+python ingestion/download_datasets.py
 python ingestion/embedding_pipeline.py
 ```
 
-### 4. Launch StoryLens
+**4. Run**
+
 ```bash
 streamlit run app.py
 ```
@@ -69,19 +65,27 @@ streamlit run app.py
 ---
 
 ## Project Structure
-- `agents/`: Dedicated LLM experts for Rewriting, Feedback, and Summarization.
-- `langgraph_flow/`: The "brain" of the system—orchestrating the conditional analysis workflow.
-- `features/`: The "eyes" of the system—heuristic modules extracting raw narrative metrics.
-- `rag/`: Vector search and retrieval-augmented generation logic.
-- `ui/`: Clean, localized components for an immersive writing experience.
+storylens/
+├── src/
+│   ├── agents/          # LLM rewrite and feedback agents
+│   ├── features/        # Narrative heuristic extractors
+│   ├── ingestion/       # Dataset download and embedding pipeline
+│   ├── langgraph_flow/  # Conditional analysis workflow
+│   ├── prompts/         # System and editorial prompts
+│   ├── rag/             # Vector retrieval logic
+│   ├── scoring/         # Paragraph weakness scoring
+│   ├── ui/              # Modular Streamlit components
+│   └── utils/           # Shared utilities
+├── tests/               # Validation and sample inputs
+├── .streamlit/          # App configuration
+├── app.py               # Entry point
+├── README.md
+└── requirements.txt
 
 ---
 
-## Future Vision
-- **Cross-Chapter Memory**: Tracking character arcs across an entire book.
-- **Style Mimicry**: Training the RAG layer on a specific author's complete works.
-- **Expanded Dialect Support**: Deep support for regional Indian languages and dialects.
+## Roadmap
 
----
-*Created with passion for the art of storytelling.*
-
+- Cross-chapter memory to track character and plot arcs across a full manuscript
+- Style adaptation by training the RAG layer on a specific author's body of work
+- Expanded support for regional Indian languages and mixed-language prose

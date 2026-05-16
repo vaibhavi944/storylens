@@ -26,7 +26,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS for aesthetic styling
+# Product-grade visual polish CSS
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap');
@@ -64,7 +64,8 @@ st.markdown("""
         margin-top: 0 !important;
     }
 
-    .stMarkdown p {
+    .stMarkdown p, .stMarkdown div {
+        font-family: 'Inter', sans-serif !important;
         font-size: 1rem;
         line-height: 1.75;
         color: #1c2b2b;
@@ -168,7 +169,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-
 def run_analysis(story_input, lang_code, ui_labels, selected_genre):
     """
     Core analysis logic shared across pages.
@@ -271,7 +271,7 @@ def main():
             "title": "मराठी कथा विश्लेषण",
             "desc": "एक AI-आधारित कथा विश्लेषण प्रणाली जी तांत्रिक शब्दावलीशिवाय लेखनात सुधारणा सुचवते.",
             "genre": "कथेची शैली (Genre)",
-            "genres": ["सामान्य (General)", "रोमांस (Romance)", "थ्रिलर (Thriller)", "काल्पनिक (Fantasy)", "नाटक (Drama)"],
+            "genres": ["सामान्य (General)", "रोमान्स (Romance)", "थ्रिलर (Thriller)", "काल्पनिक (Fantasy)", "नाटक (Drama)"],
             "paste": "तुमची मराठी कथा येथे पेस्ट करा:",
             "placeholder": "एकदा एक...",
             "button": "प्रकरणाचे विश्लेषण करा",

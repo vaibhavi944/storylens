@@ -55,8 +55,28 @@ def render_heatmap(paragraphs_state: list[dict]):
     st.markdown(full_html, unsafe_allow_html=True)
     
     st.markdown("---")
+    
+    # Legend Layout Fix - clean horizontal row with equal spacing
     col1, col2, col3 = st.columns(3)
-    col1.markdown(f"🟢 **{labels['s']}**: {labels['s_desc']}")
-    col2.markdown(f"🟡 **{labels['m']}**: {labels['m_desc']}")
-    col3.markdown(f"🔴 **{labels['w']}**: {labels['w_desc']}")
-
+    
+    # Using CSS circles instead of emojis to comply with "No emojis" while keeping "Color circles"
+    circle_style = "display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px;"
+    
+    col1.markdown(
+        f"<div style='display:flex; align-items:center; font-size:0.9rem; color:#6b7f7f;'>"
+        f"<div style='{circle_style} background-color:#e6f4ea; border:1px solid #ceead6;'></div>"
+        f"<strong>{labels['s']}</strong>: {labels['s_desc']}</div>", 
+        unsafe_allow_html=True
+    )
+    col2.markdown(
+        f"<div style='display:flex; align-items:center; font-size:0.9rem; color:#6b7f7f;'>"
+        f"<div style='{circle_style} background-color:#fff8e1; border:1px solid #ffefc0;'></div>"
+        f"<strong>{labels['m']}</strong>: {labels['m_desc']}</div>", 
+        unsafe_allow_html=True
+    )
+    col3.markdown(
+        f"<div style='display:flex; align-items:center; font-size:0.9rem; color:#6b7f7f;'>"
+        f"<div style='{circle_style} background-color:#fce8e6; border:1px solid #fad2cf;'></div>"
+        f"<strong>{labels['w']}</strong>: {labels['w_desc']}</div>", 
+        unsafe_allow_html=True
+    )
