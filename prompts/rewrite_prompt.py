@@ -35,10 +35,12 @@ and why it improves the {weakness}.
 
 Original: {original_text}
 Rewrite: {rewritten_text}
+Language: {language}
 
 Rules:
 - Speak directly to the writer in an encouraging tone.
-- Use plain English. No technical jargon. NO mentions of "embeddings", "vector similarity", "RAG", "polarity scores", etc.
+- Use plain language. No technical jargon. NO mentions of "embeddings", "vector similarity", "RAG", "polarity scores", etc.
 - Keep it under 3 sentences.
+- IMPORTANT: You MUST write this explanation in the SAME LANGUAGE as the story ({language}). If the story is in Hindi, explain in Hindi. If Marathi, explain in Marathi.
 """
 )

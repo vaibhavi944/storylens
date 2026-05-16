@@ -36,3 +36,7 @@ outputs/*
 vector_stores/
 !vector_stores/.gitkeep
 *.log
+
+# Test Samples
+test_sample_*.txt
+

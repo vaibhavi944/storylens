@@ -12,10 +12,22 @@ def render_heatmap(paragraphs_state: list[dict]):
     Renders the story heatmap.
     Each paragraph is highlighted based on its label.
     """
-    st.markdown("### Story Heatmap")
-    st.caption("Click on a paragraph to view detailed feedback below.")
+    lang = "english"
+    if paragraphs_state:
+        lang = paragraphs_state[0].get("language", "english")
+
+    all_labels = {
+        "english": {"title": "Story Heatmap", "cap": "Click on a paragraph to view detailed feedback below.", "s": "Strong", "m": "Moderate", "w": "Weak", "s_desc": "Readers stay hooked.", "m_desc": "Attention may drift.", "w_desc": "Risk of losing reader."},
+        "hindi": {"title": "कहानी का हीटमैप", "cap": "विस्तृत प्रतिक्रिया देखने के लिए किसी अनुच्छेद पर क्लिक करें।", "s": "मजबूत", "m": "सामान्य", "w": "कमजोर", "s_desc": "पाठक कहानी से जुड़े रहते हैं।", "m_desc": "ध्यान भटक सकता है।", "w_desc": "पाठक को खोने का जोखिम।"},
+        "marathi": {"title": "कथेचा हीटमॅप", "cap": "तपशीलवार अभिप्राय पाहण्यासाठी परिच्छेदावर क्लिक करा.", "s": "मजबूत", "m": "मध्यम", "w": "कमकुवत", "s_desc": "वाचक खिळून राहतात.", "m_desc": "लक्ष विचलित होऊ शकते.", "w_desc": "वाचक गमावण्याचा धोका."}
+    }
     
-    html_content = "<div style='line-height: 1.6; font-size: 1.1em;'>"
+    labels = all_labels.get(lang, all_labels["english"])
+
+    st.markdown(f"### {labels['title']}")
+    st.caption(labels["cap"])
+    
+    html_blocks = []
     
     for state in paragraphs_state:
         color = label_to_color(state["label"])
@@ -35,17 +47,15 @@ def render_heatmap(paragraphs_state: list[dict]):
             "grey": "#dadce0"
         }.get(color, "#dadce0")
         
-        html_content += f"""
-        <div style='background-color: {bg_color}; border-left: 4px solid {border_color}; padding: 10px; margin-bottom: 10px; border-radius: 4px;'>
-            {state["original_text"]}
-        </div>
-        """
+        # Build block as single line to avoid Streamlit markdown break issues
+        block = f"<div style='background-color: {bg_color}; border-left: 4px solid {border_color}; padding: 12px; margin-bottom: 12px; border-radius: 4px; color: #2c3e50; line-height: 1.6; font-size: 1.05em;'>{state['original_text']}</div>"
+        html_blocks.append(block)
         
-    html_content += "</div>"
-    st.markdown(html_content, unsafe_allow_html=True)
+    full_html = "".join(html_blocks)
+    st.markdown(full_html, unsafe_allow_html=True)
     
     st.markdown("---")
     col1, col2, col3 = st.columns(3)
-    col1.markdown("🟢 **Strong**: Readers stay hooked.")
-    col2.markdown("🟡 **Moderate**: Attention may drift.")
-    col3.markdown("🔴 **Weak**: Risk of losing reader.")
+    col1.markdown(f"🟢 **{labels['s']}**: {labels['s_desc']}")
+    col2.markdown(f"🟡 **{labels['m']}**: {labels['m_desc']}")
+    col3.markdown(f"🔴 **{labels['w']}**: {labels['w_desc']}")

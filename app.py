@@ -2,7 +2,7 @@
 # FILE PURPOSE
 # ====================================================
 # Main entry point for the StoryLens Streamlit application.
-# Orchestrates input handling, graph execution, and UI rendering.
+# Organized into dedicated language sections (EN, HI, MR).
 
 import streamlit as st
 import os
@@ -27,15 +27,15 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for aesthetic styling (Warm, writer-friendly)
+# Custom CSS for aesthetic styling
 st.markdown("""
     <style>
     .stApp {
         background-color: #faf9f6;
-    }
-    h1, h2, h3 {
-        font-family: 'Inter', 'Lato', sans-serif;
         color: #2c3e50;
+    }
+    h1, h2, h3, h4, h5, h6, p, span, label, .stMarkdown {
+        color: #2c3e50 !important;
     }
     .stButton>button {
         background-color: #008080;
@@ -48,79 +48,123 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+def run_analysis(story_input, lang_code, ui_labels):
+    """
+    Core analysis logic shared across pages.
+    """
+    if not story_input.strip():
+        st.warning(ui_labels["warning_text"])
+        return
+        
+    paragraphs = split_into_paragraphs(story_input)
+    
+    if not paragraphs:
+        st.warning("Could not identify paragraphs.")
+        return
+        
+    st.info(ui_labels["info_analyzing"].format(n=len(paragraphs)))
+    
+    progress_bar = st.progress(0)
+    
+    results = []
+    for i, para in enumerate(paragraphs):
+        # Process via LangGraph
+        # We explicitly pass the language to bypass autodetection inside the graph
+        state = process_paragraph(para, paragraph_id=i)
+        state["language"] = lang_code # Force the selected language
+        results.append(state)
+        progress_bar.progress((i + 1) / len(paragraphs))
+        
+    st.success(ui_labels["success"])
+    
+    # Tabs for different views
+    tab1, tab2, tab3, tab4 = st.tabs(ui_labels["tabs"])
+    
+    with tab1:
+        render_heatmap(results)
+    with tab2:
+        render_feedback_cards(results)
+    with tab3:
+        render_rewrite_studio(results)
+    with tab4:
+        render_summary_report(results)
+
 def main():
     st.title("📖 StoryLens")
-    st.markdown("#### *Understand your story the way your readers do*")
     
-    st.sidebar.header("Settings")
-    
-    # Check for API Key
+    # Sidebar Setup
+    st.sidebar.header("Settings / सेटिंग्स")
     api_key = os.getenv("GROQ_API_KEY")
     if not api_key or api_key == "your_groq_api_key_here":
-        st.sidebar.error("⚠️ GROQ_API_KEY not found in .env file. The application will run, but rewrites and metadata features will fall back to defaults or fail.")
+        st.sidebar.error("⚠️ GROQ_API_KEY not found.")
     else:
-        st.sidebar.success("✅ Groq API Connected")
-        
-    language = st.sidebar.selectbox("Language", ["Auto-detect", "English", "Hindi", "Marathi"])
-    genre = st.sidebar.selectbox("Genre Focus", ["General", "Romance", "Thriller", "Fantasy", "Drama"])
+        st.sidebar.success("✅ Connected")
+
+    # Three separate pages/tabs for languages as requested
+    selected_lang = st.radio(
+        "Select Language / भाषा चुनें", 
+        ["English", "Hindi / हिंदी", "Marathi / मराठी"],
+        horizontal=True
+    )
+
+    if selected_lang == "English":
+        lang_key = "english"
+        ui_labels = {
+            "title": "English Story Analysis",
+            "desc": "An AI-assisted narrative intelligence system that identifies pacing issues and suggests improvements.",
+            "paste": "Paste your English chapter here:",
+            "placeholder": "Once upon a time...",
+            "button": "Analyze Chapter",
+            "warning_text": "Please enter some text to analyze.",
+            "info_analyzing": "Analyzing {n} paragraphs. Please wait...",
+            "success": "Analysis Complete!",
+            "tabs": ["Story Heatmap", "Feedback Cards", "Rewrite Studio", "Summary Report"],
+            "about": "About StoryLens"
+        }
+    elif selected_lang == "Hindi / हिंदी":
+        lang_key = "hindi"
+        ui_labels = {
+            "title": "हिंदी कहानी विश्लेषण",
+            "desc": "एक एआई-आधारित कहानी विश्लेषण प्रणाली जो बिना किसी तकनीकी शब्दावली के लेखन में सुधार के सुझाव देती है।",
+            "paste": "अपनी हिंदी कहानी यहाँ पेस्ट करें:",
+            "placeholder": "एक समय की बात है...",
+            "button": "अध्याय का विश्लेषण करें",
+            "warning_text": "कृपया विश्लेषण के लिए कुछ टेक्स्ट दर्ज करें।",
+            "info_analyzing": "{n} अनुच्छेदों का विश्लेषण किया जा रहा है। कृपया प्रतीक्षा करें...",
+            "success": "विश्लेषण पूर्ण!",
+            "tabs": ["कहानी का हीटमैप", "सुझाव कार्ड", "सुधार स्टूडियो", "सारांश रिपोर्ट"],
+            "about": "स्टोरीलेंस के बारे में"
+        }
+    else: # Marathi
+        lang_key = "marathi"
+        ui_labels = {
+            "title": "मराठी कथा विश्लेषण",
+            "desc": "एक AI-आधारित कथा विश्लेषण प्रणाली जी तांत्रिक शब्दावलीशिवाय लेखनात सुधारणा सुचवते.",
+            "paste": "तुमची मराठी कथा येथे पेस्ट करा:",
+            "placeholder": "एकदा एक...",
+            "button": "प्रकरणाचे विश्लेषण करा",
+            "warning_text": "कृपया विश्लेषणासाठी काही मजकूर प्रविष्ट करा.",
+            "info_analyzing": "{n} परिच्छेदांचे विश्लेषण होत आहे. कृपया प्रतीक्षा करा...",
+            "success": "विश्लेषण पूर्ण!",
+            "tabs": ["कथेचा हीटमॅप", "अभिप्राय कार्ड", "सुधारणा स्टुडिओ", "सारांश अहवाल"],
+            "about": "स्टोरीलेंस बद्दल"
+        }
+
+    st.subheader(ui_labels["title"])
+    st.markdown(f"*{ui_labels['desc']}*")
     
     st.sidebar.markdown("---")
-    st.sidebar.markdown("**About StoryLens**")
-    st.sidebar.caption("An AI-assisted narrative intelligence system that identifies pacing issues and suggests improvements without technical jargon.")
-
-    st.markdown("### Paste your chapter here:")
-    story_input = st.text_area("Story Input", height=300, label_visibility="collapsed", placeholder="Once upon a time...")
+    st.sidebar.markdown(f"**{ui_labels['about']}**")
     
-    if st.button("Analyze Chapter", use_container_width=True):
-        if not story_input.strip():
-            st.warning("Please enter some text to analyze.")
-            return
-            
-        paragraphs = split_into_paragraphs(story_input)
-        
-        if not paragraphs:
-            st.warning("Could not identify paragraphs. Please format your text properly.")
-            return
-            
-        st.info(f"Analyzing {len(paragraphs)} paragraphs. Please wait...")
-        
-        progress_bar = st.progress(0)
-        
-        results = []
-        for i, para in enumerate(paragraphs):
-            # Update status message
-            status_text = "Reading your chapter..."
-            if i > len(paragraphs) * 0.3:
-                status_text = "Understanding emotional flow..."
-            if i > len(paragraphs) * 0.6:
-                status_text = "Finding similar successful scenes..."
-            if i > len(paragraphs) * 0.8:
-                status_text = "Preparing rewrite suggestions..."
-                
-            st.session_state["status_message"] = status_text
-            
-            # Process via LangGraph
-            state = process_paragraph(para, paragraph_id=i)
-            results.append(state)
-            
-            progress_bar.progress((i + 1) / len(paragraphs))
-            
-        st.success("Analysis Complete!")
-        
-        # Tabs for different views
-        tab1, tab2, tab3, tab4 = st.tabs(["Story Heatmap", "Feedback Cards", "Rewrite Studio", "Summary Report"])
-        
-        with tab1:
-            render_heatmap(results)
-            
-        with tab2:
-            render_feedback_cards(results)
-            
-        with tab3:
-            render_rewrite_studio(results)
-            
-        with tab4:
-            render_summary_report(results)
+    story_input = st.text_area(
+        ui_labels["paste"], 
+        height=300, 
+        placeholder=ui_labels["placeholder"],
+        key=f"input_{lang_key}"
+    )
+    
+    if st.button(ui_labels["button"], use_container_width=True, key=f"btn_{lang_key}"):
+        run_analysis(story_input, lang_key, ui_labels)
 
 if __name__ == "__main__":
     main()

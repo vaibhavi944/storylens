@@ -43,7 +43,8 @@ def generate_rewrite(original_text: str, language: str, weakness: str, explanati
     explanation_result = explanation_chain.invoke({
         "original_text": original_text,
         "rewritten_text": rewritten_text,
-        "weakness": weakness
+        "weakness": weakness,
+        "language": language
     })
     
     return {

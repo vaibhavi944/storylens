@@ -10,24 +10,41 @@ def render_rewrite_studio(paragraphs_state: list[dict]):
     """
     A dedicated studio view for selecting and applying rewrites.
     """
-    st.markdown("### Rewrite Studio")
+    # Detect dominant language for UI labels
+    lang = "english"
+    if paragraphs_state:
+        # Use language of the first paragraph
+        lang = paragraphs_state[0].get("language", "english")
+
+    all_labels = {
+        "english": {"title": "Rewrite Studio", "orig": "Original Version", "suggested": "Improved Version", "empty": "No rewrites needed for this chapter."},
+        "hindi": {"title": "लेखन सुधार स्टूडियो", "orig": "मूल पाठ", "suggested": "सुधरा हुआ संस्करण", "empty": "इस अध्याय के लिए किसी सुधार की आवश्यकता नहीं है।"},
+        "marathi": {"title": "लेखन सुधार स्टुडिओ", "orig": "मूळ मजकूर", "suggested": "सुधारित आवृत्ती", "empty": "या प्रकरणासाठी कोणत्याही सुधारणेची आवश्यकता नाही."}
+    }
+
+    labels = all_labels.get(lang, all_labels["english"])
+    
+    labels = all_labels.get(lang, all_labels["english"])
+
+    st.markdown(f"### {labels['title']}")
     
     rewritten_paragraphs = [p for p in paragraphs_state if p["rewritten_text"]]
     
     if not rewritten_paragraphs:
-        st.info("No rewrites needed for this chapter.")
+        st.info(labels["empty"])
         return
         
     for state in rewritten_paragraphs:
-        st.markdown(f"#### Edit Paragraph {state['paragraph_id'] + 1}")
+        para_label = {"english": "Paragraph", "hindi": "अनुच्छेद", "marathi": "परिच्छेद"}.get(lang, "Paragraph")
+        st.markdown(f"#### {para_label} {state['paragraph_id'] + 1}")
         col1, col2 = st.columns(2)
         
         with col1:
-            st.markdown("**Original**")
-            st.text_area("original", state["original_text"], height=150, disabled=True, label_visibility="collapsed", key=f"orig_{state['paragraph_id']}")
+            st.markdown(f"**{labels['orig']}**")
+            st.text_area("original", state["original_text"], height=200, disabled=True, label_visibility="collapsed", key=f"orig_{state['paragraph_id']}")
             
         with col2:
-            st.markdown("**Suggested Rewrite**")
-            st.text_area("rewrite", state["rewritten_text"], height=150, label_visibility="collapsed", key=f"rewr_{state['paragraph_id']}")
+            st.markdown(f"**{labels['suggested']}**")
+            st.text_area("rewrite", state["rewritten_text"], height=200, label_visibility="collapsed", key=f"rewr_{state['paragraph_id']}")
             
         st.markdown("---")
