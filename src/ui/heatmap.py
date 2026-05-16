@@ -19,7 +19,7 @@ def render_heatmap(paragraphs_state: list[dict]):
     all_labels = {
         "english": {"title": "Story Overview", "cap": "Click on a paragraph to view detailed feedback below.", "s": "Strong", "m": "Moderate", "w": "Weak", "s_desc": "Readers stay hooked.", "m_desc": "Attention may drift.", "w_desc": "Risk of losing reader."},
         "hindi": {"title": "कहानी का प्रवाह (Overview)", "cap": "विस्तृत प्रतिक्रिया देखने के लिए किसी अनुच्छेद पर क्लिक करें।", "s": "मजबूत", "m": "सामान्य", "w": "कमजोर", "s_desc": "पाठक कहानी से जुड़े रहते हैं।", "m_desc": "ध्यान भटक सकता है।", "w_desc": "पाठक को खोने का जोखिम।"},
-        "marathi": {"title": "कथेचा ओघ (Overview)", "cap": "तपशीलवार अभिप्राय पाहण्यासाठी परिच्छेदावर क्लिक करा.", "s": "मजबूत", "m": "मध्यम", "w": "कमकुवत", "s_desc": "वाचक खिळून राहतात.", "m_desc": "लक्ष विचलित होऊ शकते.", "w_desc": "वाचक गमावण्याचा धोका."}
+        "marathi": {"title": "कथेचा ओघ (Overview)", "cap": "तपशीलवार अभिप्राय पाहण्यासाठी परिच्छेदावर क्लिक करा.", "s": "मजबूत", "m": "सामान्य", "w": "कमजोर", "s_desc": "वाचक कथेत गुंतलेले राहतात.", "m_desc": "लक्ष विचलित होऊ शकते.", "w_desc": "वाचक गमावण्याचा धोका."}
     }
     
     labels = all_labels.get(lang, all_labels["english"])
@@ -54,29 +54,29 @@ def render_heatmap(paragraphs_state: list[dict]):
     full_html = "".join(html_blocks)
     st.markdown(full_html, unsafe_allow_html=True)
     
-    st.markdown("---")
+    st.markdown("<div style='margin-top:2rem'></div>", unsafe_allow_html=True)
     
     # Legend Layout Fix - clean horizontal row with equal spacing
     col1, col2, col3 = st.columns(3)
     
-    # Using CSS circles instead of emojis to comply with "No emojis" while keeping "Color circles"
-    circle_style = "display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px;"
-    
     col1.markdown(
-        f"<div style='display:flex; align-items:center; font-size:0.9rem; color:#6b7f7f;'>"
-        f"<div style='{circle_style} background-color:#e6f4ea; border:1px solid #ceead6;'></div>"
-        f"<strong>{labels['s']}</strong>: {labels['s_desc']}</div>", 
+        f'<div style="display:flex; align-items:center; gap:8px; font-size:0.9rem; color:#1c2b2b;">'
+        f'<div style="width:12px; height:12px; border-radius:50%; background-color:#4caf50; flex-shrink:0;"></div>'
+        f'<span>{labels["s"]}: {labels["s_desc"]}</span>'
+        f'</div>', 
         unsafe_allow_html=True
     )
     col2.markdown(
-        f"<div style='display:flex; align-items:center; font-size:0.9rem; color:#6b7f7f;'>"
-        f"<div style='{circle_style} background-color:#fff8e1; border:1px solid #ffefc0;'></div>"
-        f"<strong>{labels['m']}</strong>: {labels['m_desc']}</div>", 
+        f'<div style="display:flex; align-items:center; gap:8px; font-size:0.9rem; color:#1c2b2b;">'
+        f'<div style="width:12px; height:12px; border-radius:50%; background-color:#ffc107; flex-shrink:0;"></div>'
+        f'<span>{labels["m"]}: {labels["m_desc"]}</span>'
+        f'</div>', 
         unsafe_allow_html=True
     )
     col3.markdown(
-        f"<div style='display:flex; align-items:center; font-size:0.9rem; color:#6b7f7f;'>"
-        f"<div style='{circle_style} background-color:#fce8e6; border:1px solid #fad2cf;'></div>"
-        f"<strong>{labels['w']}</strong>: {labels['w_desc']}</div>", 
+        f'<div style="display:flex; align-items:center; gap:8px; font-size:0.9rem; color:#1c2b2b;">'
+        f'<div style="width:12px; height:12px; border-radius:50%; background-color:#ef5350; flex-shrink:0;"></div>'
+        f'<span>{labels["w"]}: {labels["w_desc"]}</span>'
+        f'</div>', 
         unsafe_allow_html=True
     )
