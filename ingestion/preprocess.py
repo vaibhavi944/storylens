@@ -12,3 +12,4 @@ def preprocess_story(raw_text: str) -> str:
     """
     # Simply delegates to our formatting utility for now
     return clean_text(raw_text)
+        
