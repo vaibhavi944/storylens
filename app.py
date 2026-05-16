@@ -118,13 +118,14 @@ def main():
             "title": "English Story Analysis",
             "desc": "An AI-assisted narrative intelligence system that identifies pacing issues and suggests improvements.",
             "genre": "Genre Focus",
+            "genres": ["General", "Romance", "Thriller", "Fantasy", "Drama"],
             "paste": "Paste your English chapter here:",
             "placeholder": "Once upon a time...",
             "button": "Analyze Chapter",
             "warning_text": "Please enter some text to analyze.",
             "info_analyzing": "Analyzing {n} paragraphs. Please wait...",
             "success": "Analysis Complete!",
-            "tabs": ["Story Heatmap", "Feedback Cards", "Rewrite Studio", "Summary Report"],
+            "tabs": ["Story Overview", "Feedback Cards", "Rewrite Studio", "Summary Report"],
             "about": "About StoryLens"
         }
     elif selected_lang == "Hindi / हिंदी":
@@ -132,14 +133,15 @@ def main():
         ui_labels = {
             "title": "हिंदी कहानी विश्लेषण",
             "desc": "एक एआई-आधारित कहानी विश्लेषण प्रणाली जो बिना किसी तकनीकी शब्दावली के लेखन में सुधार के सुझाव देती है।",
-            "genre": "शैली (Genre)",
+            "genre": "कहानी की शैली (Genre)",
+            "genres": ["सामान्य (General)", "रोमांस (Romance)", "थ्रिलर (Thriller)", "कल्पना (Fantasy)", "नाटक (Drama)"],
             "paste": "अपनी हिंदी कहानी यहाँ पेस्ट करें:",
             "placeholder": "एक समय की बात है...",
             "button": "अध्याय का विश्लेषण करें",
             "warning_text": "कृपया विश्लेषण के लिए कुछ टेक्स्ट दर्ज करें।",
             "info_analyzing": "{n} अनुच्छेदों का विश्लेषण किया जा रहा है। कृपया प्रतीक्षा करें...",
             "success": "विश्लेषण पूर्ण!",
-            "tabs": ["कहानी का हीटमैप", "सुझाव कार्ड", "सुधार स्टूडियो", "सारांश रिपोर्ट"],
+            "tabs": ["कहानी का प्रवाह", "सुझाव कार्ड", "सुधार स्टूडियो", "सारांश रिपोर्ट"],
             "about": "स्टोरीलेंस के बारे में"
         }
     else: # Marathi
@@ -147,14 +149,15 @@ def main():
         ui_labels = {
             "title": "मराठी कथा विश्लेषण",
             "desc": "एक AI-आधारित कथा विश्लेषण प्रणाली जी तांत्रिक शब्दावलीशिवाय लेखनात सुधारणा सुचवते.",
-            "genre": "शैली (Genre)",
+            "genre": "कथेची शैली (Genre)",
+            "genres": ["सामान्य (General)", "रोमान्स (Romance)", "थ्रिलर (Thriller)", "काल्पनिक (Fantasy)", "नाटक (Drama)"],
             "paste": "तुमची मराठी कथा येथे पेस्ट करा:",
             "placeholder": "एकदा एक...",
             "button": "प्रकरणाचे विश्लेषण करा",
             "warning_text": "कृपया विश्लेषणासाठी काही मजकूर प्रविष्ट करा.",
             "info_analyzing": "{n} परिच्छेदांचे विश्लेषण होत आहे. कृपया प्रतीक्षा करा...",
             "success": "विश्लेषण पूर्ण!",
-            "tabs": ["कथेचा हीटमॅप", "अभिप्राय कार्ड", "सुधारणा स्टुडिओ", "सारांश अहवाल"],
+            "tabs": ["कथेचा ओघ", "अभिप्राय कार्ड", "सुधारणा स्टुडिओ", "सारांश अहवाल"],
             "about": "स्टोरीलेंस बद्दल"
         }
 
@@ -167,7 +170,7 @@ def main():
     # Genre Focus Selector
     selected_genre = st.selectbox(
         ui_labels["genre"], 
-        ["General", "Romance", "Thriller", "Fantasy", "Drama"],
+        ui_labels["genres"],
         key=f"genre_{lang_key}"
     )
 

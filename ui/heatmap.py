@@ -17,9 +17,9 @@ def render_heatmap(paragraphs_state: list[dict]):
         lang = paragraphs_state[0].get("language", "english")
 
     all_labels = {
-        "english": {"title": "Story Heatmap", "cap": "Click on a paragraph to view detailed feedback below.", "s": "Strong", "m": "Moderate", "w": "Weak", "s_desc": "Readers stay hooked.", "m_desc": "Attention may drift.", "w_desc": "Risk of losing reader."},
-        "hindi": {"title": "कहानी का हीटमैप", "cap": "विस्तृत प्रतिक्रिया देखने के लिए किसी अनुच्छेद पर क्लिक करें।", "s": "मजबूत", "m": "सामान्य", "w": "कमजोर", "s_desc": "पाठक कहानी से जुड़े रहते हैं।", "m_desc": "ध्यान भटक सकता है।", "w_desc": "पाठक को खोने का जोखिम।"},
-        "marathi": {"title": "कथेचा हीटमॅप", "cap": "तपशीलवार अभिप्राय पाहण्यासाठी परिच्छेदावर क्लिक करा.", "s": "मजबूत", "m": "मध्यम", "w": "कमकुवत", "s_desc": "वाचक खिळून राहतात.", "m_desc": "लक्ष विचलित होऊ शकते.", "w_desc": "वाचक गमावण्याचा धोका."}
+        "english": {"title": "Story Overview", "cap": "Click on a paragraph to view detailed feedback below.", "s": "Strong", "m": "Moderate", "w": "Weak", "s_desc": "Readers stay hooked.", "m_desc": "Attention may drift.", "w_desc": "Risk of losing reader."},
+        "hindi": {"title": "कहानी का प्रवाह (Overview)", "cap": "विस्तृत प्रतिक्रिया देखने के लिए किसी अनुच्छेद पर क्लिक करें।", "s": "मजबूत", "m": "सामान्य", "w": "कमजोर", "s_desc": "पाठक कहानी से जुड़े रहते हैं।", "m_desc": "ध्यान भटक सकता है।", "w_desc": "पाठक को खोने का जोखिम।"},
+        "marathi": {"title": "कथेचा ओघ (Overview)", "cap": "तपशीलवार अभिप्राय पाहण्यासाठी परिच्छेदावर क्लिक करा.", "s": "मजबूत", "m": "मध्यम", "w": "कमकुवत", "s_desc": "वाचक खिळून राहतात.", "m_desc": "लक्ष विचलित होऊ शकते.", "w_desc": "वाचक गमावण्याचा धोका."}
     }
     
     labels = all_labels.get(lang, all_labels["english"])
